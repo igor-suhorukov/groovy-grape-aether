@@ -71,6 +71,11 @@
                             <include>com.github.igor-suhorukov:mvn-classloader</include>
                         </includes>
                     </artifactSet>
+                    <transformers>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <mainClass>com.github.igorsuhorukov.GroovyMain</mainClass>
+                        </transformer>
+                    </transformers>
                 </configuration>
             </plugin>
         </plugins>
