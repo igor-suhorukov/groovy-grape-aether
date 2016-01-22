@@ -8,7 +8,7 @@
     <groupId>com.github.igor-suhorukov</groupId>
     <artifactId>groovy-grape-aether</artifactId>
     <packaging>jar</packaging>
-    <version>2.4.5.2-SNAPSHOT</version>
+    <version>2.4.5.2</version>
     <name>groovy-grape-aether</name>
     <description>Integrate goovy with maven class resolver based on GrapeEngine from spring boot</description>
     <url>https://github.com/igor-suhorukov/groovy-grape-aether</url>
