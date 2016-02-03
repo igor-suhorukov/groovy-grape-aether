@@ -1,5 +1,7 @@
 package com.github.igorsuhorukov;
 
+import com.github.igorsuhorukov.url.handler.mvn.MavenURLStreamHandlerFactory;
+
 import java.net.URL;
 
 public class GroovyMain {
