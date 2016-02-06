@@ -46,7 +46,7 @@
         <dependency>
             <groupId>com.github.igor-suhorukov</groupId>
             <artifactId>mvn-classloader</artifactId>
-            <version>1.5-SNAPSHOT</version>
+            <version>1.5</version>
         </dependency>
     </dependencies>
     <build>
