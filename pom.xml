@@ -73,7 +73,7 @@
                     </artifactSet>
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>com.github.igorsuhorukov.GroovyMain</mainClass>
+                            <mainClass>com.github.igorsuhorukov.groovy.GroovyMain</mainClass>
                         </transformer>
                     </transformers>
                 </configuration>
