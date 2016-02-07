@@ -70,7 +70,7 @@ public class GroovyScriptCallable<T extends Serializable> extends AbstractGroovy
         if (variables!=null && !variables.isEmpty() && variables.containsKey("args")){
             throw new IllegalArgumentException("Variable with key 'args' is prohibited");
         }
-        if(variables.containsKey(null)){
+        if(variables!=null && variables.containsKey(null)){
             throw new IllegalArgumentException("Variable with NULL key is prohibited");
         }
     }
