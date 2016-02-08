@@ -1,77 +1,47 @@
 package com.github.igorsuhorukov.groovy.executor;
 
-import com.github.igorsuhorukov.codehaus.plexus.util.IOUtil;
 import com.github.igorsuhorukov.groovy.GroovyMain;
+import com.github.igorsuhorukov.groovy.executor.settings.ScriptSettings;
+import com.github.igorsuhorukov.springframework.util.Assert;
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.Script;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
-import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-public class GroovyScriptCallable<T extends Serializable> extends AbstractGroovyScript implements Callable<T>{
+public class GroovyScriptCallable<T extends Serializable> implements Callable<T>, Serializable{
 
-    private Map<String, Serializable> variables;
+    private ScriptSettings scriptSettings;
 
-    public GroovyScriptCallable(URL scriptPath, String... args) {
-        super(scriptPath, args);
-    }
-
-    public GroovyScriptCallable(URL scriptPath, Map<String, Serializable> variables, String... args) {
-        super(scriptPath, args);
-        validateVariables(variables);
-        this.variables = variables;
-    }
-
-    public GroovyScriptCallable(String scriptSource, String... args) throws IOException {
-        super(scriptSource, args);
-    }
-
-    public GroovyScriptCallable(String scriptSource, Map<String, Serializable> variables, String... args) throws IOException {
-        super(scriptSource, args);
-        validateVariables(variables);
-        this.variables = variables;
+    public GroovyScriptCallable(ScriptSettings scriptSettings) {
+        Assert.notNull(scriptSettings, "scriptSettings is null");
+        this.scriptSettings = scriptSettings;
     }
 
     @SuppressWarnings("unchecked")
     public T call() throws Exception {
-        GroovyClassLoader groovyClassLoader = GroovyMain.getGroovyClassLoader();
-        Class scriptClass = groovyClassLoader.parseClass(getScriptText());
-        Binding context = new Binding(args);
-        setScriptVariables(context);
-        Constructor constructor = scriptClass.getConstructor(Binding.class);
-        Script script = (Script) constructor.newInstance(context);
-        return (T) script.run();
-    }
-
-    private String getScriptText() throws IOException {
-        InputStream inputStream = scriptPath.openStream();
         try {
-            return IOUtil.toString(inputStream);
-        } finally {
-            IOUtil.close(inputStream);
+            scriptSettings.setSystemProperties();
+            GroovyClassLoader groovyClassLoader = GroovyMain.getGroovyClassLoader();
+            Class scriptClass = groovyClassLoader.parseClass(scriptSettings.getGroovySource());
+            Binding context = new Binding(scriptSettings.getArgs());
+            setScriptVariables(context);
+            Constructor constructor = scriptClass.getConstructor(Binding.class);
+            Script script = (Script) constructor.newInstance(context);
+            return (T) script.run();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 
-    private void setScriptVariables(Binding context) {
-        if (variables!=null && !variables.isEmpty()){
-            for (Map.Entry<String, Serializable> variable: variables.entrySet()){
+    protected void setScriptVariables(Binding context) {
+        if (scriptSettings.getVariables()!=null && !scriptSettings.getVariables().isEmpty()){
+            for (Map.Entry<String, Serializable> variable: scriptSettings.getVariables().entrySet()){
                 context.setProperty(variable.getKey(), variable.getValue());
             }
-        }
-    }
-
-    private void validateVariables(Map<String, Serializable> variables) {
-        if (variables!=null && !variables.isEmpty() && variables.containsKey("args")){
-            throw new IllegalArgumentException("Variable with key 'args' is prohibited");
-        }
-        if(variables!=null && variables.containsKey(null)){
-            throw new IllegalArgumentException("Variable with NULL key is prohibited");
         }
     }
 }
