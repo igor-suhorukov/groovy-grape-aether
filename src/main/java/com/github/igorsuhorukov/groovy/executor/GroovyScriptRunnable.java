@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static com.github.igorsuhorukov.groovy.executor.SecurityManagerUtils.applyNoExitSecurityManager;
+
 public class GroovyScriptRunnable implements Runnable, Serializable{
 
     private GroovyMainSettings groovyMainSettings;
@@ -20,10 +22,14 @@ public class GroovyScriptRunnable implements Runnable, Serializable{
 
     public void run() {
         groovyMainSettings.setSystemProperties();
+        SecurityManager securityManager = System.getSecurityManager();
         try {
+            applyNoExitSecurityManager();
             GroovyMain.main(getGroovyParameters());
-        } catch (Exception e) {
+        } catch (Throwable e) {
             throw new RuntimeException(e.getMessage());
+        } finally {
+            System.setSecurityManager(securityManager);
         }
     }
 

@@ -12,6 +12,8 @@ import java.lang.reflect.Constructor;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import static com.github.igorsuhorukov.groovy.executor.SecurityManagerUtils.applyNoExitSecurityManager;
+
 public class GroovyScriptCallable<T extends Serializable> implements Callable<T>, Serializable{
 
     private ScriptSettings scriptSettings;
@@ -23,6 +25,7 @@ public class GroovyScriptCallable<T extends Serializable> implements Callable<T>
 
     @SuppressWarnings("unchecked")
     public T call() throws Exception {
+        SecurityManager securityManager = System.getSecurityManager();
         try {
             scriptSettings.setSystemProperties();
             GroovyClassLoader groovyClassLoader = GroovyMain.getGroovyClassLoader();
@@ -31,9 +34,12 @@ public class GroovyScriptCallable<T extends Serializable> implements Callable<T>
             setScriptVariables(context);
             Constructor constructor = scriptClass.getConstructor(Binding.class);
             Script script = (Script) constructor.newInstance(context);
+            applyNoExitSecurityManager();
             return (T) script.run();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             throw new RuntimeException(e.getMessage());
+        } finally {
+            System.setSecurityManager(securityManager);
         }
     }
 
