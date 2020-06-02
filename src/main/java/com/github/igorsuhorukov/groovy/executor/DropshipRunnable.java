@@ -5,8 +5,9 @@ import com.github.igorsuhorukov.smreed.dropship.Dropship;
 import java.io.Serializable;
 import java.util.Map;
 
-import static com.github.igorsuhorukov.google.common.base.Ascii.checkArgument;
-import static com.github.igorsuhorukov.google.common.base.Ascii.checkNotNull;
+import static com.github.igorsuhorukov.google.common.base.Joiner.checkArgument;
+import static com.github.igorsuhorukov.google.common.base.Joiner.checkNotNull;
+
 
 public class DropshipRunnable implements Runnable, Serializable{
 

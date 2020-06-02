@@ -8,7 +8,7 @@
     <groupId>com.github.igor-suhorukov</groupId>
     <artifactId>groovy-grape-aether</artifactId>
     <packaging>jar</packaging>
-    <version>2.4.16-SNAPSHOT</version>
+    <version>3.0.4-SNAPSHOT</version>
     <name>groovy-grape-aether</name>
     <description>Integrate goovy with maven class resolver based on GrapeEngine from spring boot</description>
     <url>https://github.com/igor-suhorukov/groovy-grape-aether</url>
@@ -33,7 +33,7 @@
         <tag>HEAD</tag>
     </scm>
     <properties>
-        <groovy.version>2.4.15</groovy.version>
+        <groovy.version>3.0.4</groovy.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
@@ -42,11 +42,12 @@
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>${groovy.version}</version>
+            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>com.github.igor-suhorukov</groupId>
             <artifactId>mvn-classloader</artifactId>
-            <version>1.8</version>
+            <version>1.10-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -72,7 +73,28 @@
                 <configuration>
                     <artifactSet>
                         <includes>
-                            <include>org.codehaus.groovy:groovy-all</include>
+                            <include>org.codehaus.groovy:groovy</include>
+                            <include>org.codehaus.groovy:groovy-ant</include>
+                            <include>org.codehaus.groovy:groovy-astbuilder</include>
+                            <include>org.codehaus.groovy:groovy-cli-picocli</include>
+                            <include>org.codehaus.groovy:groovy-console</include>
+                            <include>org.codehaus.groovy:groovy-datetime</include>
+                            <include>org.codehaus.groovy:groovy-docgenerator</include>
+                            <include>org.codehaus.groovy:groovy-groovydoc</include>
+                            <include>org.codehaus.groovy:groovy-groovysh</include>
+                            <include>org.codehaus.groovy:groovy-jmx</include>
+                            <include>org.codehaus.groovy:groovy-json</include>
+                            <include>org.codehaus.groovy:groovy-jsr223</include>
+                            <include>org.codehaus.groovy:groovy-macro</include>
+                            <include>org.codehaus.groovy:groovy-nio</include>
+                            <include>org.codehaus.groovy:groovy-servlet</include>
+                            <include>org.codehaus.groovy:groovy-sql</include>
+                            <include>org.codehaus.groovy:groovy-swing</include>
+                            <include>org.codehaus.groovy:groovy-templates</include>
+                            <include>org.codehaus.groovy:groovy-test</include>
+                            <include>org.codehaus.groovy:groovy-test-junit5</include>
+                            <include>org.codehaus.groovy:groovy-testng</include>
+                            <include>org.codehaus.groovy:groovy-xml</include>
                             <include>org.aspectj.agent:groovy-grape-aether</include>
                             <include>com.github.igor-suhorukov:mvn-classloader</include>
                         </includes>
